@@ -22,21 +22,17 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="toggle"
           />
-          <!-- <user-menu></user-menu> -->
         </div>
         <div v-else :class="['top-nav-header-index', theme]">
           <div class="header-index-wide">
             <div class="header-index-left">
-              <!-- <logo class="top-nav-header" :show-title="device !== 'mobile'"/> -->
-              <!-- <s-menu v-if="device !== 'mobile'" mode="horizontal" :menu="menus" :theme="theme"/>
-              <a-icon
-                v-else
-                class="trigger"
-                :type="collapsed ? 'menu-fold' : 'menu-unfold'"
+              <img
+                src="@/assets/images/ic_dawer_24px.svg"
+                alt=""
+                class="icon_menu"
                 @click="toggle"
-              />-->
-
-              <h1 class="companyName">科乐美股份有限公司</h1>
+              />
+              <h1 class="company-name">科乐美股份有限公司</h1>
             </div>
             <user-menu class="header-index-right"></user-menu>
           </div>
@@ -48,22 +44,16 @@
 
 <script>
 import UserMenu from '../tools/UserMenu';
-// import SMenu from '../menu/';
-// import Logo from "../tools/Logo";
 import { mixin } from '@/utils/mixin';
-
 export default {
   name: 'GlobalHeader',
   components: {
     UserMenu
-    // SMenu
-    // Logo
   },
   mixins: [mixin],
   props: {
     mode: {
       type: String,
-      // sidemenu, topmenu
       default: 'sidemenu'
     },
     menus: {
@@ -100,7 +90,6 @@ export default {
       if (!this.autoHideHeader) {
         return;
       }
-
       const scrollTop =
         document.body.scrollTop + document.documentElement.scrollTop;
       if (!this.ticking) {
@@ -143,11 +132,21 @@ export default {
   opacity: 0;
 }
 .header-index-left {
-  .companyName {
+  .company-name {
     font-size: 16px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.87);
-    margin-left: 72px;
+  }
+}
+.icon_menu {
+  display: inline-block;
+  padding: 26px;
+  font-size: 20px;
+  line-height: 64px;
+  transition: color 0.3s;
+  cursor: pointer;
+  &:hover {
+    background: rgba(0, 0, 0, 0.025);
   }
 }
 </style>

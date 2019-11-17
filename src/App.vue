@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-    <router-view />
+    <a-locale-provider :locale="locale">
+      <router-view />
+    </a-locale-provider>
   </div>
 </template>
 
-<style lang="scss">
-html,
-body {
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-    "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC",
-    "WenQuanYi Micro Hei", sans-serif;
-}
-</style>
+<script>
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+export default {
+  data() {
+    return {
+      locale: zhCN
+    };
+  }
+};
+</script>

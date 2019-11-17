@@ -1,7 +1,7 @@
 <template>
   <a-dropdown>
     <span class="action global-lang">
-      <a-icon type="global" style="font-size: 16px"/>
+      <a-icon type="global" style="font-size: 16px" />
     </span>
     <a-menu slot="overlay" style="width: 150px;" @click="SwitchLang">
       <a-menu-item key="zh-CN">
@@ -29,18 +29,11 @@
 </template>
 
 <script>
-// import { mixin as langMixin } from '@/store/i18n-mixin'
-
 export default {
   name: 'LangSelect',
-  // mixins: [langMixin],
   data() {
     return {};
   },
-  methods: {
-    // SwitchLang (row) {
-    //   this.setLang(row.key)
-    // }
-  }
+  methods: {}
 };
 </script>

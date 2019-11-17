@@ -15,7 +15,10 @@
           <a-tab-pane tab="通知" key="1">
             <a-list>
               <a-list-item>
-                <a-list-item-meta title="你收到了 14 份新周报" description="一年前">
+                <a-list-item-meta
+                  title="你收到了 14 份新周报"
+                  description="一年前"
+                >
                   <a-avatar
                     style="background-color: white"
                     slot="avatar"
@@ -24,7 +27,10 @@
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
-                <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
+                <a-list-item-meta
+                  title="你推荐的 曲妮妮 已通过第三轮面试"
+                  description="一年前"
+                >
                   <a-avatar
                     style="background-color: white"
                     slot="avatar"
@@ -33,7 +39,10 @@
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
-                <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
+                <a-list-item-meta
+                  title="这种模板可以区分多种通知类型"
+                  description="一年前"
+                >
                   <a-avatar
                     style="background-color: white"
                     slot="avatar"
@@ -50,7 +59,7 @@
     </template>
     <span @click="fetchNotice" class="header-notice" ref="noticeRef">
       <a-badge count="12">
-        <a-icon style="font-size: 16px; padding: 4px" type="bell"/>
+        <a-icon style="font-size: 16px; padding: 4px" type="bell" />
       </a-badge>
     </span>
   </a-popover>
@@ -86,7 +95,7 @@ export default {
   top: 50px !important;
 }
 </style>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .header-notice {
   display: inline-block;
   transition: all 0.3s;

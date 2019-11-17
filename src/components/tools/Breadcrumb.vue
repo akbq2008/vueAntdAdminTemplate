@@ -4,7 +4,8 @@
       <router-link
         v-if="item.name != name && index != 1"
         :to="{ path: item.path === '' ? '/' : item.path }"
-      >{{ item.meta.title }}</router-link>
+        >{{ item.meta.title }}</router-link
+      >
       <span v-else>{{ item.meta.title }}</span>
     </a-breadcrumb-item>
   </a-breadcrumb>
@@ -24,11 +25,8 @@ export default {
   methods: {
     getBreadcrumb() {
       this.breadList = [];
-      // this.breadList.push({name: 'index', path: '/dashboard/', meta: {title: '首页'}})
-
       this.name = this.$route.name;
       this.$route.matched.forEach(item => {
-        // item.name !== 'index' && this.breadList.push(item)
         this.breadList.push(item);
       });
     }
@@ -41,5 +39,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

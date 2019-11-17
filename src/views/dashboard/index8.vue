@@ -1,10 +1,11 @@
 <template>
-    <div>首页二级</div>
+  <div>
+    因此
+  </div>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

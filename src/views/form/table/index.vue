@@ -1,5 +1,5 @@
 <template>
-    <div>首页二级</div>
+    <div>表格</div>
 </template>
 
 <script>

@@ -18,55 +18,21 @@
         minHeight: 'calc(100vh - 64px)'
       }"
     >
-      <a-layout-sider class="sideBar">
-        <a-drawer
-          v-if="isMobile()"
-          placement="left"
-          :wrapClassName="`drawer-sider ${navTheme}`"
-          :closable="false"
-          :visible="collapsed"
-          @close="drawerClose"
+      <div class="layout-container">
+        <div
+          class="layout-left animated"
+          :class="[collapsed ? 'fadeOutLeft' : 'fadeInLeft']"
         >
-          <!-- <main-menu>xx</main-menu>
-          <sub-menu></sub-menu> -->
-          <!-- <side-menu
-            mode="inline"
-            :menus="menus"
-            :collapsed="false"
-            :collapsible="true"
-            @menuSelect="menuSelect"
-          ></side-menu> -->
-        </a-drawer>
-        <main-menu :menus="menus" />
-
-        <!-- <side-menu
-          v-else-if="isSideMenu()"
-          mode="inline"
-          :menus="menus"
-          :collapsed="collapsed"
-          :collapsible="true"
-        ></side-menu> -->
-      </a-layout-sider>
-      <!-- layout content -->
-      <a-layout class="contentWrap">
-        <a-layout-content
-          :style="{
-            height: '100%',
-            margin: '24px 24px 0',
-            paddingTop: fixedHeader ? '64px' : '0'
-          }"
-        >
-          <!-- <multi-tab v-if="multiTab"></multi-tab> -->
-
+          <main-menu :menus="menus"></main-menu>
+        </div>
+        <div class="layout-right">
           <transition name="page-transition">
-            <route-view />
+            <div class="content-container">
+              <route-view />
+            </div>
           </transition>
-        </a-layout-content>
-        <!-- layout footer -->
-        <a-layout-footer>
-          <!-- <global-footer/> -->
-        </a-layout-footer>
-      </a-layout>
+        </div>
+      </div>
     </a-layout>
   </a-layout>
 </template>
@@ -76,13 +42,9 @@ import { triggerWindowResizeEvent } from '@/utils/util';
 import { mapActions } from 'vuex';
 import { mixin, mixinDevice } from '@/utils/mixin';
 import config from '@/config/defaultSettings';
-
 import RouteView from './RouteView';
 import mainMenu from '@/components/mainMenu/index';
-// import subMenu from '@/components/mainMenu/subMenu/index';
-// import SideMenu from 'components/menu/SideMenu';
 import GlobalHeader from '@/components/globalHeader';
-// import GlobalFooter from '@/components/globalFooter';
 import mainRoutes from '@/router';
 export default {
   name: 'BasicLayout',
@@ -90,10 +52,7 @@ export default {
   components: {
     RouteView,
     mainMenu,
-    // subMenu,
-    // SideMenu,
     GlobalHeader
-    // GlobalFooter
   },
   data() {
     return {
@@ -103,10 +62,6 @@ export default {
     };
   },
   computed: {
-    // ...mapState({
-    //   // 动态主路由
-    //   mainMenu: state => state.permission.addRouters
-    // }),
     contentPaddingLeft() {
       if (!this.fixSidebar || this.isMobile()) {
         return '0';
@@ -125,8 +80,6 @@ export default {
   created() {
     // 路由
     this.menus = mainRoutes.options.routes;
-    console.log(this.menus, 'this.menus ');
-
     this.collapsed = !this.sidebarOpened;
   },
   mounted() {
@@ -144,7 +97,6 @@ export default {
     ...mapActions(['setSidebar']),
     toggle() {
       this.collapsed = !this.collapsed;
-      this.setSidebar(!this.collapsed);
       triggerWindowResizeEvent();
     },
     paddingCalc() {
@@ -165,23 +117,7 @@ export default {
 </script>
 
 <style lang="scss">
-.contentWrap {
-  margin-left: 53px;
-}
-.sideBar {
-  min-width: 240px !important;
-  max-width: 240px;
-  background-color: #ffffff;
-}
-/*
- * The following styles are auto-applied to elements with
- * transition="page-transition" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the page transition by editing
- * these styles.
- */
-
+@import '../config/theme.scss';
 .page-transition-enter {
   opacity: 0;
 }
@@ -189,13 +125,111 @@ export default {
 .page-transition-leave-active {
   opacity: 0;
 }
-
-.page-transition-enter .page-transition-container,
-.page-transition-leave-active .page-transition-container {
+.page-transition-enter,
+.page-transition-leave-active {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
 .header {
   box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.2);
+}
+.layout-container {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+.layout-left {
+  background-color: #fff;
+  transition: 0.5s linear;
+  max-width: 240px;
+  width: 240px;
+}
+.layout-right {
+  padding: 16px;
+  width: 100%;
+  flex: auto;
+}
+.content-container {
+  padding: 24px;
+  background-color: $layoutBg;
+  border-radius: 2px;
+}
+.layout-content {
+  height: '100%';
+  margin: '16px 16px 24px 16px';
+}
+@-webkit-keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    width: 100%;
+  }
+
+  to {
+    opacity: 0;
+    width: 0%;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.fadeOutLeft {
+  -webkit-animation-name: fadeOutLeft;
+  animation-name: fadeOutLeft;
+}
+@-webkit-keyframes fadeInLeft {
+  from {
+    width: 0%;
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    width: 100%;
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    width: 0%;
+    opacity: 0;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    width: 100%;
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.fadeInLeft {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 </style>
