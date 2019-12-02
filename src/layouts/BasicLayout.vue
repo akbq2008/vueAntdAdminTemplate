@@ -1,201 +1,182 @@
 <template>
-  <a-layout :class="['layout', device]">
+  <a-layout>
     <!-- SideMenu -->
     <a-layout-header class="header">
-      <!-- layout header -->
-      <global-header
-        :mode="layoutMode"
-        :menus="menus"
-        :collapsed="collapsed"
-        :device="device"
-        @toggle="toggle"
-      />
+      <div class="header-container">
+        <div class="header-icon inline-block" @click="toggle">
+          <img
+            src="@/assets/images/ic_dawer_24px.svg"
+            alt=""
+            class="header-icon_menu"
+          />
+        </div>
+        <h1 class="header-title inline-block">科乐美股份有限公司</h1>
+        <navigation></navigation>
+      </div>
+      <user-menu class="header-right"></user-menu>
     </a-layout-header>
-    <a-layout
-      :class="[layoutMode, `content-width-${contentWidth}`]"
-      :style="{
-        paddingLeft: contentPaddingLeft,
-        minHeight: 'calc(100vh - 64px)'
-      }"
-    >
-      <a-layout-sider class="sideBar">
-        <a-drawer
-          v-if="isMobile()"
-          placement="left"
-          :wrapClassName="`drawer-sider ${navTheme}`"
-          :closable="false"
-          :visible="collapsed"
-          @close="drawerClose"
+    <a-layout>
+      <div class="layout-container">
+        <div
+          class="layout-left animated"
+          :class="[collapsed ? 'fadeOutLeft' : 'fadeInLeft']"
         >
-          <!-- <main-menu>xx</main-menu>
-          <sub-menu></sub-menu> -->
-          <!-- <side-menu
-            mode="inline"
-            :menus="menus"
-            :collapsed="false"
-            :collapsible="true"
-            @menuSelect="menuSelect"
-          ></side-menu> -->
-        </a-drawer>
-        <main-menu :menus="menus" />
-
-        <!-- <side-menu
-          v-else-if="isSideMenu()"
-          mode="inline"
-          :menus="menus"
-          :collapsed="collapsed"
-          :collapsible="true"
-        ></side-menu> -->
-      </a-layout-sider>
-      <!-- layout content -->
-      <a-layout class="contentWrap">
-        <a-layout-content
-          :style="{
-            height: '100%',
-            margin: '24px 24px 0',
-            paddingTop: fixedHeader ? '64px' : '0'
-          }"
-        >
-          <!-- <multi-tab v-if="multiTab"></multi-tab> -->
-
+          <main-menu :menus="menus"></main-menu>
+        </div>
+        <div class="layout-right" :class="{ 'layout-right_open': !collapsed }">
           <transition name="page-transition">
-            <route-view />
+            <div class="content-container">
+              <route-view />
+            </div>
           </transition>
-        </a-layout-content>
-        <!-- layout footer -->
-        <a-layout-footer>
-          <!-- <global-footer/> -->
-        </a-layout-footer>
-      </a-layout>
+        </div>
+      </div>
     </a-layout>
   </a-layout>
 </template>
 
 <script>
-import { triggerWindowResizeEvent } from '@/utils/util';
-import { mapActions } from 'vuex';
-import { mixin, mixinDevice } from '@/utils/mixin';
-import config from '@/config/defaultSettings';
-
+import Navigation from '@/components/nav/Nav';
 import RouteView from './RouteView';
-import mainMenu from '@/components/mainMenu/index';
-// import subMenu from '@/components/mainMenu/subMenu/index';
-// import SideMenu from 'components/menu/SideMenu';
-import GlobalHeader from '@/components/globalHeader';
-// import GlobalFooter from '@/components/globalFooter';
+import mainMenu from '@/components/mainMenu/MainMenu';
+import UserMenu from '@/components/tools/UserMenu';
 import mainRoutes from '@/router';
+import { mapGetters } from 'vuex';
+import Bus from '@/utils/eventBus';
 export default {
   name: 'BasicLayout',
-  mixins: [mixin, mixinDevice],
   components: {
     RouteView,
     mainMenu,
-    // subMenu,
-    // SideMenu,
-    GlobalHeader
-    // GlobalFooter
+    UserMenu,
+    Navigation
   },
   data() {
     return {
-      production: config.production,
-      collapsed: false,
       menus: []
     };
   },
   computed: {
-    // ...mapState({
-    //   // 动态主路由
-    //   mainMenu: state => state.permission.addRouters
-    // }),
-    contentPaddingLeft() {
-      if (!this.fixSidebar || this.isMobile()) {
-        return '0';
-      }
-      if (this.sidebarOpened) {
-        return '256px';
-      }
-      return '80px';
-    }
-  },
-  watch: {
-    sidebarOpened(val) {
-      this.collapsed = !val;
-    }
+    ...mapGetters(['collapsed'])
   },
   created() {
     // 路由
     this.menus = mainRoutes.options.routes;
-    console.log(this.menus, 'this.menus ');
-
-    this.collapsed = !this.sidebarOpened;
-  },
-  mounted() {
-    const userAgent = navigator.userAgent;
-    if (userAgent.indexOf('Edge') > -1) {
-      this.$nextTick(() => {
-        this.collapsed = !this.collapsed;
-        setTimeout(() => {
-          this.collapsed = !this.collapsed;
-        }, 16);
-      });
-    }
   },
   methods: {
-    ...mapActions(['setSidebar']),
     toggle() {
-      this.collapsed = !this.collapsed;
-      this.setSidebar(!this.collapsed);
-      triggerWindowResizeEvent();
-    },
-    paddingCalc() {
-      let left = '';
-      if (this.sidebarOpened) {
-        left = this.isDesktop() ? '256px' : '80px';
-      } else {
-        left = (this.isMobile() && '0') || (this.fixSidebar && '80px') || '0';
-      }
-      return left;
-    },
-    menuSelect() {},
-    drawerClose() {
-      this.collapsed = false;
+      Bus.$emit('toggle', !this.collapsed);
+      this.$store.commit('TOGGLE_MENU', !this.collapsed);
     }
   }
 };
 </script>
 
-<style lang="scss">
-.contentWrap {
-  margin-left: 53px;
-}
-.sideBar {
-  min-width: 240px !important;
-  max-width: 240px;
-  background-color: #ffffff;
-}
-/*
- * The following styles are auto-applied to elements with
- * transition="page-transition" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the page transition by editing
- * these styles.
- */
-
-.page-transition-enter {
-  opacity: 0;
-}
-
-.page-transition-leave-active {
-  opacity: 0;
-}
-
-.page-transition-enter .page-transition-container,
-.page-transition-leave-active .page-transition-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
+<style lang="less">
+@import "../config/theme.less";
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1000;
   box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.2);
+  background-color: @containerBg !important;
+  padding: 0 !important;
+  &-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-icon {
+    user-select: none;
+    cursor: pointer;
+    padding-left: 26px;
+    padding-right: 26px;
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+  }
+  &-right {
+    display: flex;
+    align-items: center;
+    margin-right: 82px;
+  }
+  &-title {
+    vertical-align: middle;
+    margin: 0;
+    padding-right: 112px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+.layout-container {
+  padding-top: 64px;
+  display: flex;
+  min-height: 100vh;
+}
+.layout-left {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  bottom: 0;
+  z-index: 100;
+  background-color: @containerBg;
+  transition: 0.5s linear;
+  max-width: 240px;
+  width: 240px;
+  border-right: 1px solid @menuBorderRightColor;
+  box-sizing: border-box;
+}
+.layout-right {
+  padding: 16px;
+  width: 100%;
+  transition: 0.5s ease;
+  &_open {
+    margin-left: 240px;
+  }
+}
+.content-container {
+  border-radius: 2px;
+}
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    width: 100%;
+  }
+  to {
+    opacity: 0;
+    width: 0%;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+.fadeOutLeft {
+  animation-name: fadeOutLeft;
+}
+@keyframes fadeInLeft {
+  from {
+    width: 0%;
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInLeft {
+  animation-name: fadeInLeft;
+  min-width: 168px;
+}
+.animated {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
 }
 </style>

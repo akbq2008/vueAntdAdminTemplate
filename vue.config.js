@@ -24,5 +24,18 @@ module.exports = {
       .options({
         name: 'assets/[name].[hash:8].[ext]'
       });
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        modifyVars: {
+          'primary-color': '#3929D7',
+          'link-color': '#3929D7',
+          'font-size-base': '14px',
+          'border-radius-base': '4px'
+        },
+        javascriptEnabled: true
+      }
+    }
   }
 };

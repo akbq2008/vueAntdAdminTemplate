@@ -1,0 +1,90 @@
+@menuSelectedBg: #eeeef0;
+@menuSelectedColor: rgba(0, 0, 0, 0.871);
+@menuHoverBg: #f2f2f4;
+@menuBorderRightColor: #eeeef0;
+@containerBg: #fff;
+@layoutBg: #f8f8fa;
+@tableHoverBg: #f8f8fa;
+@navHoverBg: #f2f2f4;
+
+.container-bg {
+  background-color: @containerBg;
+  padding: 24px;
+}
+
+.ant-layout {
+  background-color: @layoutBg !important;
+}
+
+.ant-input-lg {
+  font-size: 14px !important;
+}
+
+.ant-table-thead > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+.ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td,
+.ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td,
+.ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background-color: @tableHoverBg !important;
+}
+
+.ant-pagination {
+  float: none !important;
+  text-align: center !important;
+  margin: 24px 0 0 0 !important;
+}
+
+::selection {
+  background-color: rgba(57, 40, 215, 0.5) !important;
+}
+
+.ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: @navHoverBg;
+}
+
+.ant-btn-lg {
+  width: 120px;
+  font-size: 14px !important;
+}
+
+@media screen and (min-width: 1400px) {
+  .form-grid .ant-form-item-control-wrapper {
+    width: 280px !important;
+  }
+}
+
+.form-grid .ant-form-item {
+  width: 100%;
+}
+
+.form-grid .ant-form-item-control-wrapper {
+  width: 100%;
+}
+
+.form-grid .ant-form-item-label {
+  max-width: 160px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 140px;
+}
+
+.form-grid .ant-row {
+  margin: 6px 0;
+}
+
+.form-grid .form-search__bar {
+  padding-top: 60px;
+}
+
+.ant-select-lg {
+  font-size: 14px;
+}
+// 表格表头滚动
+.ant-table-scroll .ant-table-header {
+  overflow: auto !important;
+}
+
+.ant-table-scroll .ant-table-header {
+  margin-bottom: 0 !important;
+}

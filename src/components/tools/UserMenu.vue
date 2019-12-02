@@ -1,23 +1,21 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
-      <!-- <a href="https://pro.loacg.com/docs/getting-started" target="_blank">
-        <span class="action">
-          <a-icon type="question-circle-o"></a-icon>
-        </span>
-      </a>-->
-      <!-- <notice-icon class="action"/> -->
       <a-dropdown>
-        <span class="action ant-dropdown-link user-dropdown-menu">
-          <span class="user-wrap">
-            <a-avatar
+        <div class="user-action">
+          <div class="user-info">
+            <img
+              src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4280818391,516628045&fm=26&gp=0.jpg"
+              alt="avatar"
               class="avatar"
-              size="small"
-              :src="avatar?avatar:require('@/assets/logo.png')"
-            />
-            <span>{{ nickname?nickname:'逃亡乐队' }}</span>
-          </span>
-        </span>
+            >
+            <span class="user-name">
+              {{
+              nickname ? nickname : "逃亡乐队"
+              }}
+            </span>
+          </div>
+        </div>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <a-menu-item key="0">
             <router-link :to="{ name: 'center' }">
@@ -49,14 +47,11 @@
 </template>
 
 <script>
-// import NoticeIcon from '@/components/NoticeIcon';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'UserMenu',
-  components: {
-    // NoticeIcon
-  },
+  components: {},
   computed: {
     ...mapGetters(['nickname', 'avatar'])
   },
@@ -86,20 +81,36 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style scoped lang="less">
 .user-wrapper {
-  .action {
-    span {
-      color: #393939 !important;
+  .user-action {
+    .user-info {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px 12px 4px 4px;
+      height: 32px;
+      border-radius: 16px;
+      vertical-align: middle;
+      &:hover {
+        background-color: #f2f2f4;
+      }
+    }
+    .user-name {
+      white-space: nowrap;
+      color: #393939;
+      vertical-align: middle;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(57, 57, 57, 1);
+      line-height: 20px;
     }
   }
-  .user-wrap {
-    padding: 6px 12px;
-    &:hover {
-      box-sizing: border-box;
-      background-color: #f2f2f4;
-      border-radius: 16px;
-    }
+  .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 8px;
   }
 }
 </style>
